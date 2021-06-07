@@ -12,12 +12,18 @@ Welcome to your new app.
                                    Placeholder="Item/UPC"
                                    class="form-control"
                                    @ref="tester" />
+            <DxTextBox @ref="testDxTextBox"
+                       @bind-Text="@TextValue" 
+                       BindValueMode="BindValueMode.OnLostFocus"
+                       ClearButtonDisplayMode="DataEditorClearButtonDisplayMode.Never"/> 
         </div>
     </div>
 </EditForm>
-<input type="text" @ref="testInput"/>
+<p>@TextValue</p>
 @code
 {
+    DxTextBox testDxTextBox;
+    string TextValue = "Hi Bill";
     EventOnEnterInputText tester;
     ElementReference testInput;
     private class TestClass
@@ -31,17 +37,19 @@ Welcome to your new app.
     }
 
     TestClass testClass=new TestClass();
-    protected override async Task OnAfterRenderAsync(bool firstRender)
+    protected override void OnAfterRender(bool firstRender)
     {
         if (firstRender)
         {
-            await testInput.FocusAsync();
-            await testInput.FocusAsync();
-            //await tester.SetFocus();
-            await InvokeAsync(StateHasChanged);
+            testDxTextBox.FocusAsync();
         }
-        Console.WriteLine("In OnAfterRender");
-        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    async Task SetInitialFocus()
+    {
+        await tester.SetFocus();
+        await InvokeAsync(StateHasChanged);
+
     }
 
     void ValidateMe()
