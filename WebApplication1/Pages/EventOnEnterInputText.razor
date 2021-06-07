@@ -1,0 +1,60 @@
+﻿@inherits InputText
+
+
+    <div class="form-group">
+        <label>@Placeholder</label>
+
+        <input @attributes="@AdditionalAttributes"
+               class="@CssClass"
+               type="text"
+               @bind="@CurrentValue"
+               @bind:event="oninput"
+               @onkeydown="KeyDownHandler"
+               @ref="myRef" />
+    </div>
+    <style>
+        .form-group {
+            padding: 10px;
+            border: 2px solid lightgray;
+            margin: 10px;
+        }
+
+            .form-group > label {
+                position: absolute;
+                top: -1px;
+                left: 20px;
+                background-color: white;
+                color:gray;
+            }
+
+            .form-group > input {
+                border: none;
+            }
+    </style>
+
+@code{
+
+    private ElementReference myRef;
+
+        [Parameter]
+        public string Placeholder { get; set; } = "";
+
+    [Parameter]
+    public EventCallback OnLostFocus { get; set; }
+
+        [Parameter]
+        public EventCallback OnKeyDown { get; set; }
+
+    public async Task SetFocus()
+    {
+        await myRef.FocusAsync();
+    }
+        protected async Task KeyDownHandler(KeyboardEventArgs args)
+        {
+            if (args != null && args.Key != null)
+            {
+                await OnKeyDown.InvokeAsync(null);
+            }
+        }
+
+}

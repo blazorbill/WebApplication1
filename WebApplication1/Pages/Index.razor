@@ -1,0 +1,51 @@
+﻿@page "/"
+<h1>Hello, world!</h1>
+
+Welcome to your new app.
+
+<SurveyPrompt Title="How is Blazor working for you?" />
+<EditForm Model="testClass">
+    <div class="row">
+        <div class="col-12">
+            <EventOnEnterInputText @bind-Value="testClass.testValue"
+                                   OnLostFocus="ValidateMe"
+                                   Placeholder="Item/UPC"
+                                   class="form-control"
+                                   @ref="tester" />
+        </div>
+    </div>
+</EditForm>
+<input type="text" @ref="testInput"/>
+@code
+{
+    EventOnEnterInputText tester;
+    ElementReference testInput;
+    private class TestClass
+    {
+        public string testValue { get; set; } = "Bill";
+    }
+
+    protected override Task OnInitializedAsync()
+    {
+        return base.OnInitializedAsync();
+    }
+
+    TestClass testClass=new TestClass();
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await testInput.FocusAsync();
+            await testInput.FocusAsync();
+            //await tester.SetFocus();
+            await InvokeAsync(StateHasChanged);
+        }
+        Console.WriteLine("In OnAfterRender");
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    void ValidateMe()
+    {
+        Console.WriteLine("Button Clicked");
+    }
+}
