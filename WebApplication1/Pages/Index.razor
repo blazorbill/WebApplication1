@@ -20,11 +20,13 @@
     }
     TestClass testClass = new TestClass();
 
-    protected override void OnAfterRender(bool firstRender)
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
-            testDxTextBox.FocusAsync();
+            await Task.Yield();
+
+            await testDxTextBox.FocusAsync();
         }
     }
 }
