@@ -3,17 +3,13 @@
 <EditForm Model="testClass">
     <div class="row">
         <div class="col-12">
-            <DxTextBox @ref="testDxTextBox"
-                       @bind-Text="@testClass.TestValue" 
-                       BindValueMode="BindValueMode.OnLostFocus"
-                       ClearButtonDisplayMode="DataEditorClearButtonDisplayMode.Never"/> 
+            <input type="text" @ref="inputTextRef" />
         </div>
     </div>
 </EditForm>
-<p>@testClass.TestValue</p>
 @code
 {
-    DxTextBox testDxTextBox;
+    ElementReference inputTextRef;
     private class TestClass
     {
         public string TestValue { get; set; } = "Hi Bill";
@@ -26,7 +22,7 @@
         {
             await Task.Yield();
 
-            await testDxTextBox.FocusAsync();
+            await inputTextRef.FocusAsync();
         }
     }
 }
